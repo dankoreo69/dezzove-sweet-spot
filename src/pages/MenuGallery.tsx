@@ -1,31 +1,178 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { ShoppingCart, Star, Instagram, Heart, MessageCircle, Bookmark, Sparkles } from "lucide-react";
 import DezzoveNavbar from "@/components/DezzoveNavbar";
 import Footer from "@/components/Footer";
 import heroWaffle from "@/assets/hero-waffle-drizzle.jpg";
-import chocoShake from "@/assets/choco-shake.jpg";
-import caramelWaffle from "@/assets/caramel-waffle.jpg";
+
+import imgLotusCake from "@/assets/menu-lotus-cake.jpeg";
+import imgChocoPancake from "@/assets/menu-choco-pancake.jpeg";
+import imgMoonCake from "@/assets/menu-moon-cake.jpeg";
+import imgDryFruitBowl from "@/assets/menu-dry-fruit-bowl.jpeg";
+import imgChocoShake from "@/assets/menu-choco-shake.jpeg";
+import imgChocoChipsBowl from "@/assets/menu-choco-chips-bowl.jpeg";
+import imgMangoBowl from "@/assets/menu-mango-bowl.jpeg";
+import imgBlueLemonade from "@/assets/menu-blue-lemonade.jpeg";
+import imgChocoStrawberry from "@/assets/menu-choco-strawberry.jpeg";
+import imgBrownie from "@/assets/menu-brownie.jpeg";
+
+type MenuItem = {
+  id: number;
+  name: string;
+  desc: string;
+  price: string;
+  category: string;
+  image: string;
+  badge?: string;
+  rating: number;
+};
+
+const categories = [
+  { id: "all", label: "All Items", emoji: "✨" },
+  { id: "cakes", label: "Cakes & Tins", emoji: "🍰" },
+  { id: "bowls", label: "Dessert Bowls", emoji: "🍨" },
+  { id: "drinks", label: "Drinks", emoji: "🥤" },
+  { id: "specials", label: "Specials", emoji: "⭐" },
+];
+
+const menuItems: MenuItem[] = [
+  { id: 1, name: "Lotus Biscoff Cake Tin", desc: "Creamy Lotus Biscoff mousse in a signature golden tin with cookie crumble topping", price: "₹349", category: "cakes", image: imgLotusCake, badge: "bestseller", rating: 4.9 },
+  { id: 2, name: "Chocolate Doracake", desc: "Thick dorayaki-style pancake drenched in dark chocolate ganache with choco chips", price: "₹199", category: "cakes", image: imgChocoPancake, badge: "hot", rating: 4.8 },
+  { id: 3, name: "Moonlight Truffle Tin", desc: "Rich dark chocolate truffle cake with elegant golden moon topper in a premium tin", price: "₹399", category: "cakes", image: imgMoonCake, rating: 5.0 },
+  { id: 4, name: "Dry Fruit Overload Bowl", desc: "Creamy dessert bowl loaded with pistachios, almonds, cashews, and dried fruits", price: "₹249", category: "bowls", image: imgDryFruitBowl, badge: "new", rating: 4.7 },
+  { id: 5, name: "Chocolate Mud Shake", desc: "Thick chocolate shake with layers of chocolate ganache dripping down the glass", price: "₹179", category: "drinks", image: imgChocoShake, rating: 4.8 },
+  { id: 6, name: "Choco Chips Lava Bowl", desc: "Overflowing chocolate dessert bowl topped with a mountain of dark chocolate chips", price: "₹229", category: "bowls", image: imgChocoChipsBowl, badge: "bestseller", rating: 4.9 },
+  { id: 7, name: "Fresh Mango Bowl", desc: "Seasonal Alphonso mango chunks on a creamy mango base — summer's favorite", price: "₹199", category: "bowls", image: imgMangoBowl, badge: "new", rating: 4.8 },
+  { id: 8, name: "Blue Ocean Lemonade", desc: "Refreshing blue curaçao lemonade with fresh mint and lemon slice", price: "₹149", category: "drinks", image: imgBlueLemonade, rating: 4.6 },
+  { id: 9, name: "Chocolate Strawberry Cup", desc: "Fresh strawberries drizzled with rich dark chocolate — a classic indulgence", price: "₹219", category: "specials", image: imgChocoStrawberry, badge: "hot", rating: 4.9 },
+  { id: 10, name: "Loaded Brownie Slab", desc: "Dense fudgy brownie drenched in chocolate sauce and topped with white & dark choco chips", price: "₹189", category: "specials", image: imgBrownie, badge: "bestseller", rating: 5.0 },
+];
+
+const galleryItems = [
+  { id: 1, image: imgBrownie, label: "Loaded Brownie", likes: "2.4K", comments: "143", span: "col-span-2 row-span-2" },
+  { id: 2, image: imgMangoBowl, label: "Mango Bowl", likes: "1.8K", comments: "89", span: "col-span-1 row-span-1" },
+  { id: 3, image: imgChocoStrawberry, label: "Choco Strawberry", likes: "3.1K", comments: "201", span: "col-span-1 row-span-1" },
+  { id: 4, image: imgChocoPancake, label: "Doracake", likes: "2.9K", comments: "178", span: "col-span-1 row-span-1" },
+  { id: 5, image: imgLotusCake, label: "Lotus Cake", likes: "5.2K", comments: "312", span: "col-span-1 row-span-1" },
+  { id: 6, image: imgBlueLemonade, label: "Blue Lemonade", likes: "1.6K", comments: "97", span: "col-span-1 row-span-1" },
+  { id: 7, image: imgMoonCake, label: "Moonlight Truffle", likes: "2.2K", comments: "134", span: "col-span-1 row-span-1" },
+  { id: 8, image: imgChocoChipsBowl, label: "Choco Chips Bowl", likes: "4.1K", comments: "256", span: "col-span-1 row-span-1" },
+  { id: 9, image: imgDryFruitBowl, label: "Dry Fruit Bowl", likes: "1.9K", comments: "112", span: "col-span-1 row-span-1" },
+  { id: 10, image: imgChocoShake, label: "Chocolate Shake", likes: "2.7K", comments: "165", span: "col-span-1 row-span-1" },
+];
+
+function MenuCard({ item }: { item: MenuItem }) {
+  return (
+    <div
+      className="card-hover rounded-2xl overflow-hidden bg-card"
+      style={{ border: "1px solid hsl(var(--border))", boxShadow: "0 4px 20px hsla(195,70%,38%,0.06)" }}
+    >
+      <div className="relative h-48 overflow-hidden">
+        <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+        {item.badge && (
+          <div className={`badge-${item.badge} absolute top-3 right-3`}>
+            {item.badge === "new" ? "New" : item.badge === "hot" ? "🔥 Hot" : "⭐ Bestseller"}
+          </div>
+        )}
+        <div className="absolute bottom-3 left-3 flex items-center gap-1 glass px-2.5 py-1 rounded-full">
+          <Star size={10} fill="#d4956a" stroke="none" />
+          <span className="text-xs font-bold text-primary-foreground">{item.rating}</span>
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="font-display font-bold text-base mb-1 text-foreground">{item.name}</h3>
+        <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
+        <div className="flex items-center justify-between">
+          <span className="font-bold text-lg gradient-text">{item.price}</span>
+          <button className="btn-primary py-2 px-4 text-xs" onClick={() => alert(`${item.name} added to your order!`)}>
+            <ShoppingCart size={12} />
+            <span>Add</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GalleryItem({ item }: { item: typeof galleryItems[0] }) {
+  const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  return (
+    <div className={`insta-item ${item.span}`} style={{ minHeight: "180px" }}>
+      <img src={item.image} alt={item.label} className="w-full h-full object-cover rounded-2xl" style={{ minHeight: "inherit" }} />
+      <div className="insta-overlay">
+        <div className="flex flex-col items-center gap-3 p-4 w-full">
+          <p className="font-display font-bold text-sm text-center text-primary-foreground">{item.label}</p>
+          <div className="flex items-center gap-4 text-xs text-primary-foreground">
+            <span className="flex items-center gap-1.5">
+              <Heart size={14} fill="white" />
+              {item.likes}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <MessageCircle size={14} fill="white" stroke="none" />
+              {item.comments}
+            </span>
+          </div>
+          <div className="flex gap-3 mt-1">
+            <button
+              onClick={() => setLiked(!liked)}
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+              style={{ background: liked ? "hsl(var(--destructive))" : "rgba(255,255,255,0.25)" }}
+            >
+              <Heart size={14} fill={liked ? "white" : "none"} stroke="white" />
+            </button>
+            <button
+              onClick={() => setSaved(!saved)}
+              className="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+              style={{ background: saved ? "hsl(var(--primary))" : "rgba(255,255,255,0.25)" }}
+            >
+              <Bookmark size={14} fill={saved ? "white" : "none"} stroke="white" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function MenuGallery() {
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  const filtered = activeCategory === "all" ? menuItems : menuItems.filter((m) => m.category === activeCategory);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("visible");
+          if (entry.isIntersecting) {
+            setVisible(true);
+            entry.target.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale").forEach((el) => el.classList.add("visible"));
+          }
         });
       },
-      { threshold: 0.06 }
+      { threshold: 0.05 }
     );
-    document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale").forEach((el) => observer.observe(el));
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    if (galleryRef.current) observer.observe(galleryRef.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        sectionRef.current?.querySelectorAll(".reveal").forEach((el) => el.classList.add("visible"));
+      }, 50);
+    }
+  }, [activeCategory, visible]);
 
   return (
     <div className="min-h-screen bg-background">
       <DezzoveNavbar />
 
-      {/* HERO */}
+      {/* HERO - kept as original */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroWaffle} alt="Menu hero" className="w-full h-full object-cover" style={{ filter: "brightness(1.05)" }} />
@@ -56,74 +203,92 @@ export default function MenuGallery() {
         </div>
       </section>
 
-      <div className="wave-divider">
-        <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
-          <path d="M0,60 C200,0 400,80 600,40 C800,0 1000,70 1200,30 L1200,80 L0,80 Z" className="shape-fill" />
-        </svg>
-      </div>
+      {/* Menu Section */}
+      <section className="section-pad bg-dessert-gradient pt-28" ref={sectionRef}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 reveal">
+            <span className="section-tag mb-4 inline-flex">🍽️ Our Menu</span>
+            <h2 className="font-display font-bold mb-4 text-foreground" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)" }}>
+              Taste the <span className="gradient-text italic">Magic</span>
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto text-base leading-relaxed">
+              From thick shakes that hit different to cakes that break the internet — explore our full menu of handcrafted delights.
+            </p>
+          </div>
 
-      {/* WAFFLES */}
-      <section className="relative overflow-hidden" style={{ background: "#F2FBFC", padding: "8rem 0 5rem" }}>
-        <div className="relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="story-block" style={{ direction: "ltr" }}>
-            <div className="story-block-image reveal-left" style={{ direction: "ltr" }}>
-              <img src={heroWaffle} alt="Golden waffle" />
-            </div>
-            <div className="story-block-content reveal-right delay-200" style={{ direction: "ltr" }}>
-              <span className="section-tag mb-6 inline-flex"><Sparkles size={12} /> Waffles</span>
-              <h2 className="font-display text-3xl sm:text-4xl md:text-[2.8rem] mb-3 leading-[1.15]" style={{ color: "#083E45" }}>Dreamy Waffles</h2>
-              <p className="font-handwritten text-xl mb-8" style={{ color: "#19B4C6" }}>Golden. Loud. Soft Inside.</p>
-              <div className="space-y-4" style={{ color: "#3A6E76" }}>
-                <p className="text-base md:text-lg leading-[1.9] font-light">Pressed until the edges caramelize. Lifted at just the right second. Finished with warm Belgian chocolate that melts before you do.</p>
-                <p className="font-display text-xl mt-6" style={{ color: "#083E45" }}>Not just made. <span className="italic gradient-text-aqua">Crafted.</span></p>
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-2.5 justify-center mb-10 reveal">
+            {categories.map((cat) => (
+              <button key={cat.id} className={`menu-filter-btn ${activeCategory === cat.id ? "active" : ""}`} onClick={() => setActiveCategory(cat.id)}>
+                <span className="mr-1">{cat.emoji}</span>
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          <div key={activeCategory} className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {filtered.map((item) => (
+              <MenuCard key={item.id} item={item} />
+            ))}
           </div>
         </div>
       </section>
 
-      <div className="poetic-divider reveal" style={{ background: "#F2FBFC" }}><p>"Sweetness takes time."</p></div>
-
-      {/* SHAKES */}
-      <section className="relative overflow-hidden" style={{ background: "#F2FBFC", padding: "5rem 0" }}>
-        <div className="relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="story-block" style={{ direction: "rtl" }}>
-            <div className="story-block-image reveal-right" style={{ direction: "ltr" }}>
-              <img src={chocoShake} alt="Thick chocolate milkshake" />
+      {/* Gallery Section */}
+      <section className="section-pad bg-cream-gradient" ref={galleryRef}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-4">
+            <div className="reveal">
+              <span className="section-tag mb-4 inline-flex">
+                <Instagram size={12} />
+                Gallery
+              </span>
+              <h2 className="font-display font-bold text-foreground" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)" }}>
+                Sweet <span className="gradient-text italic">Moments</span> Worth Sharing
+              </h2>
             </div>
-            <div className="story-block-content reveal-left delay-200" style={{ direction: "ltr" }}>
-              <span className="section-tag mb-6 inline-flex"><Sparkles size={12} /> Shakes</span>
-              <h2 className="font-display text-3xl sm:text-4xl md:text-[2.8rem] mb-3 leading-[1.15]" style={{ color: "#083E45" }}>Thick Shakes</h2>
-              <p className="font-handwritten text-xl mb-8" style={{ color: "#19B4C6" }}>Slow Down. Sip Deep.</p>
-              <div className="space-y-4" style={{ color: "#3A6E76" }}>
-                <p className="text-base md:text-lg leading-[1.9] font-light">Heavy glass. Cold condensation. A spoon standing tall in velvet thickness. Each layer folds into the next — cream, cocoa, fruit, crunch.</p>
-                <p className="font-display text-xl mt-6" style={{ color: "#083E45" }}>One sip. Pause. <span className="italic gradient-text-aqua">Repeat.</span></p>
+            <div className="reveal-right">
+              <a href="https://instagram.com/dezzove" target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex text-xs">
+                <Instagram size={14} />
+                <span>Follow @dezzove</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 reveal" style={{ gridAutoRows: "180px" }}>
+            {galleryItems.map((item) => (
+              <GalleryItem key={item.id} item={item} />
+            ))}
+          </div>
+
+          {/* Social proof strip */}
+          <div className="mt-10 reveal">
+            <div className="social-card flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-primary-gradient">
+                  <Instagram size={22} color="white" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-foreground">Share your Dezzove moment</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Tag <strong className="text-primary">@dezzove</strong> or use <strong className="text-primary">#DezzoveMoments</strong>
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-5">
+                <div className="text-center">
+                  <div className="font-display font-bold text-xl gradient-text">24K+</div>
+                  <div className="text-xs text-muted-foreground">Followers</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-display font-bold text-xl gradient-text">5K+</div>
+                  <div className="text-xs text-muted-foreground">Posts</div>
+                </div>
+                <a href="https://instagram.com/dezzove" target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-2.5 px-5">
+                  <span>Follow Us</span>
+                </a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CAKES CTA */}
-      <section className="cinematic-break" style={{ minHeight: "80vh" }}>
-        <div className="absolute inset-0">
-          <img src={caramelWaffle} alt="Celebration" className="w-full h-full object-cover" style={{ filter: "brightness(1.1)" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,62,69,0.5) 0%, rgba(15,108,120,0.55) 40%, rgba(8,62,69,0.7) 100%)" }} />
-        </div>
-        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center py-24">
-          <span className="section-tag mb-8 inline-flex reveal" style={{ background: "rgba(25,180,198,0.12)", borderColor: "rgba(25,180,198,0.2)", color: "#FFFFFF" }}>
-            <Sparkles size={12} /> Cakes
-          </span>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl mb-4 leading-[1.08] reveal delay-100 animate-text-glow" style={{ color: "#FFFFFF" }}>Celebration Cakes</h2>
-          <p className="font-handwritten text-2xl mb-12 reveal delay-200" style={{ color: "#19B4C6" }}>Layered Like Memories.</p>
-          <Link
-            to="/contact"
-            className="reveal delay-500 inline-flex items-center gap-3 px-9 py-4 rounded-full font-semibold text-base tracking-wide transition-all hover:scale-105 shadow-lg"
-            style={{ background: "#19B4C6", color: "#FFFFFF", boxShadow: "0 12px 40px rgba(25,180,198,0.3)" }}
-          >
-            <span>Create Your Celebration</span>
-            <ArrowRight size={18} />
-          </Link>
         </div>
       </section>
 
