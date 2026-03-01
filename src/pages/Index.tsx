@@ -107,8 +107,8 @@ export default function Index() {
       </div>
 
       {/* OUR STORY */}
-      <section className="relative overflow-hidden" style={{ background: "#F2FBFC", padding: "9rem 0 7rem" }}>
-        <div className="absolute inset-0" style={{ background: "rgba(242,251,252,0.93)" }} />
+      <section className="relative overflow-hidden bg-cream-gradient" style={{ padding: "9rem 0 7rem" }}>
+        <div className="absolute inset-0 bg-background/90" />
         <div className="relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-5 reveal">
             <span className="section-tag mb-6 inline-flex">
@@ -117,14 +117,14 @@ export default function Index() {
             </span>
           </div>
 
-          <h2 className="font-display text-4xl sm:text-5xl md:text-[3.8rem] text-center mb-6 leading-tight reveal" style={{ color: "#083E45" }}>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-[3.8rem] text-center mb-6 leading-tight reveal text-foreground">
             Crafted for the
             <br />
             <span className="italic gradient-text-aqua">sweet souls</span>
           </h2>
 
           <div className="max-w-[680px] mx-auto space-y-7 reveal delay-200">
-            <p className="text-lg md:text-xl leading-[1.85] text-center italic font-light" style={{ color: "#2E5F66" }}>
+            <p className="text-lg md:text-xl leading-[1.85] text-center italic font-light text-muted-foreground">
               Born from a dream to create a space where every bite feels like a warm hug, Dezzove is more than a dessert shop — it's a vibe, a feeling, and a community built on joy.
             </p>
 
@@ -137,8 +137,8 @@ export default function Index() {
               ].map((item) => (
                 <div key={item.label} className="reveal delay-300">
                   <p className="text-3xl mb-2">{item.emoji}</p>
-                  <p className="font-display text-sm" style={{ color: "#083E45" }}>{item.label}</p>
-                  {item.sub && <p className="text-xs mt-1" style={{ color: "#5E8C92" }}>{item.sub}</p>}
+                  <p className="font-display text-sm text-foreground">{item.label}</p>
+                  {item.sub && <p className="text-xs mt-1 text-muted-foreground">{item.sub}</p>}
                 </div>
               ))}
             </div>
@@ -183,7 +183,7 @@ export default function Index() {
       </section>
 
       {/* VALUES */}
-      <section className="relative overflow-hidden" style={{ background: "#F2FBFC", padding: "5rem 0 9rem" }}>
+      <section className="relative overflow-hidden bg-cream-gradient" style={{ padding: "5rem 0 9rem" }}>
         <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -194,8 +194,8 @@ export default function Index() {
             ].map((item, i) => (
               <div key={item.title} className={`experience-card reveal delay-${(i + 1) * 100}`}>
                 <div className="text-4xl mb-5">{item.emoji}</div>
-                <h3 className="font-display text-xl mb-3" style={{ color: "#083E45" }}>{item.title}</h3>
-                <p className="leading-[1.8] text-sm" style={{ color: "#3A6E76" }}>{item.desc}</p>
+                <h3 className="font-display text-xl mb-3 text-foreground">{item.title}</h3>
+                <p className="leading-[1.8] text-sm text-muted-foreground">{item.desc}</p>
               </div>
             ))}
           </div>
