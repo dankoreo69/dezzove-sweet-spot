@@ -167,6 +167,65 @@
   background: linear-gradient(160deg, #F2FBFC 0%, #EAF8FA 30%, #D6F0F3 60%, #F2FBFC 100%);
 }
 
+.bg-dessert-gradient {
+  background: linear-gradient(180deg, #F2FBFC 0%, #E8F6F8 50%, #F2FBFC 100%);
+}
+
+/* ===========================
+   SECTION PAD
+   =========================== */
+.section-pad {
+  padding: 5rem 0;
+}
+
+/* ===========================
+   DZ INPUT
+   =========================== */
+.dz-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid hsla(185, 38%, 92%, 1);
+  background: hsla(185, 40%, 97%, 1);
+  color: hsl(190, 68%, 16%);
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.dz-input:focus {
+  border-color: hsl(187, 77%, 44%);
+  box-shadow: 0 0 0 3px hsla(187, 77%, 44%, 0.1);
+}
+
+.dz-input::placeholder {
+  color: hsl(184, 22%, 44%);
+}
+
+/* ===========================
+   BTN OUTLINE
+   =========================== */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: 2px solid hsl(187, 77%, 44%);
+  color: hsl(187, 77%, 44%);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: hsl(187, 77%, 44%);
+  color: white;
+  transform: translateY(-2px);
+}
+
 /* ===========================
    ANIMATIONS
    =========================== */
