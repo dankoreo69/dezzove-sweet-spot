@@ -58,6 +58,57 @@
     --sidebar-border: 185 38% 93%;
     --sidebar-ring: 187 77% 44%;
   }
+
+  .dark {
+    --background: 200 30% 6%;
+    --foreground: 185 30% 90%;
+
+    --card: 200 25% 10%;
+    --card-foreground: 185 30% 90%;
+
+    --popover: 200 25% 10%;
+    --popover-foreground: 185 30% 90%;
+
+    --primary: 187 77% 44%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 20% 14%;
+    --secondary-foreground: 185 30% 85%;
+
+    --muted: 200 18% 16%;
+    --muted-foreground: 185 20% 60%;
+
+    --accent: 187 77% 44%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 15% 18%;
+    --input: 200 15% 18%;
+    --ring: 187 77% 44%;
+
+    --dz-cream: 200 30% 6%;
+    --dz-beige: 200 20% 14%;
+    --dz-chocolate: 187 77% 44%;
+    --dz-chocolate-dark: 185 30% 90%;
+    --dz-teal: 187 77% 44%;
+    --dz-teal-light: 187 60% 58%;
+    --dz-coral: 0 72% 65%;
+    --dz-text-light: 185 20% 60%;
+    --dz-dark: 185 30% 90%;
+    --dz-dark-teal: 185 30% 85%;
+    --dz-gold: 38 70% 55%;
+
+    --sidebar-background: 200 25% 10%;
+    --sidebar-foreground: 185 30% 85%;
+    --sidebar-primary: 187 77% 44%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 20% 14%;
+    --sidebar-accent-foreground: 185 30% 85%;
+    --sidebar-border: 200 15% 18%;
+    --sidebar-ring: 187 77% 44%;
+  }
 }
 
 @layer base {
@@ -134,6 +185,16 @@
   border: 1px solid rgba(214, 240, 243, 0.6);
 }
 
+.dark .glass {
+  background: rgba(10, 30, 35, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .glass-card {
+  background: rgba(15, 40, 48, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .glass-dark {
   background: rgba(8, 62, 69, 0.7);
   backdrop-filter: blur(20px);
@@ -171,6 +232,18 @@
   background: linear-gradient(180deg, #F2FBFC 0%, #E8F6F8 50%, #F2FBFC 100%);
 }
 
+.dark .bg-cream-gradient {
+  background: linear-gradient(135deg, hsl(200, 30%, 6%) 0%, hsl(200, 25%, 10%) 50%, hsl(200, 30%, 6%) 100%);
+}
+
+.dark .bg-hero-gradient {
+  background: linear-gradient(160deg, hsl(200, 30%, 6%) 0%, hsl(200, 25%, 9%) 30%, hsl(200, 25%, 10%) 60%, hsl(200, 30%, 6%) 100%);
+}
+
+.dark .bg-dessert-gradient {
+  background: linear-gradient(180deg, hsl(200, 30%, 6%) 0%, hsl(200, 25%, 9%) 50%, hsl(200, 30%, 6%) 100%);
+}
+
 /* ===========================
    SECTION PAD
    =========================== */
@@ -185,9 +258,9 @@
   width: 100%;
   padding: 0.75rem 1rem;
   border-radius: 0.75rem;
-  border: 1px solid hsla(185, 38%, 92%, 1);
-  background: hsla(185, 40%, 97%, 1);
-  color: hsl(190, 68%, 16%);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-size: 0.875rem;
   transition: all 0.3s ease;
   outline: none;
@@ -429,6 +502,15 @@
   border-color: rgba(25, 180, 198, 0.2);
 }
 
+.dark .experience-card {
+  background: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+.dark .experience-card:hover {
+  box-shadow: 0 25px 60px rgba(25, 180, 198, 0.1);
+}
+
 .testimonial-card {
   background: hsl(var(--card));
   backdrop-filter: blur(10px);
@@ -468,6 +550,7 @@
    =========================== */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #F2FBFC; }
+.dark ::-webkit-scrollbar-track { background: hsl(200, 30%, 6%); }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #0F6C78, #19B4C6);
   border-radius: 3px;
@@ -501,6 +584,7 @@
 }
 
 .wave-divider .shape-fill { fill: #F2FBFC; }
+.dark .wave-divider .shape-fill { fill: hsl(200, 30%, 6%); }
 
 /* ===========================
    POETIC DIVIDER

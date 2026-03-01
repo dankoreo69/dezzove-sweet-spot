@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import dezzoveLogo from "@/assets/dezzove-logo.png";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -51,7 +52,8 @@ export default function DezzoveNavbar() {
             })}
           </ul>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <DarkModeToggle />
             <Link to="/contact" className="hidden md:flex btn-primary text-xs py-2.5 px-5">
               <span>Order Now</span>
             </Link>
