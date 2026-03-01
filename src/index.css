@@ -900,3 +900,92 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ===========================
+   MENU FILTER BUTTONS
+   =========================== */
+.menu-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.menu-filter-btn:hover {
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary));
+}
+.menu-filter-btn.active {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--dz-teal-light)));
+  color: hsl(var(--primary-foreground));
+  border-color: transparent;
+  box-shadow: 0 4px 16px hsla(187, 77%, 44%, 0.3);
+}
+
+/* ===========================
+   MENU BADGES
+   =========================== */
+.badge-bestseller,
+.badge-hot,
+.badge-new {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+}
+.badge-bestseller {
+  background: linear-gradient(135deg, hsl(var(--dz-gold)), hsl(38, 70%, 65%));
+  color: #fff;
+}
+.badge-hot {
+  background: linear-gradient(135deg, hsl(var(--destructive)), hsl(15, 80%, 55%));
+  color: #fff;
+}
+.badge-new {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--dz-teal-light)));
+  color: #fff;
+}
+
+/* ===========================
+   INSTAGRAM GALLERY
+   =========================== */
+.insta-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+.insta-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: linear-gradient(180deg, transparent 30%, rgba(8, 62, 69, 0.85) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 1rem;
+}
+.insta-item:hover .insta-overlay {
+  opacity: 1;
+}
+
+/* ===========================
+   SOCIAL CARD
+   =========================== */
+.social-card {
+  padding: 1.5rem 2rem;
+  border-radius: 1.25rem;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 4px 20px hsla(195, 70%, 38%, 0.06);
+}
